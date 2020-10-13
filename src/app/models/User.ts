@@ -1,35 +1,28 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm'
 
-@Entity("user")
-export class User {
+@Entity('user')
+export default class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  name: string;
+  name: string
 
   @Column()
-  username: string;
+  username: string
 
   @Column()
-  email: string;
+  email: string
 
   @Column()
-  passwordHash: string;
+  passwordHash: string
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deletedAt: Date
 }

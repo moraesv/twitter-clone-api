@@ -1,15 +1,16 @@
-import { getRepository } from "typeorm";
-import { Request, Response } from "express";
+import { inject } from 'inversify'
+import { controller, httpGet } from 'inversify-express-utils'
 
-import { User } from "../models/User";
+import TYPES from '../config/types'
 
-class UserController {
-  async index(req: Request, res: Response) {
-    const userRepository = getRepository(User);
-    const users = await userRepository.find();
+import UserService from '../services/UserService'
 
-    return res.send(users);
+@controller('/users')
+export default class UserController {
+  constructor(@inject(TYPES.UserService) private userService: UserService) {}
+
+  @httpGet('/')
+  public index() {
+    return this.userService.findAll()
   }
 }
-
-export default new UserController();
