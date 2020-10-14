@@ -1,10 +1,25 @@
-import { Container } from 'inversify'
+import { Container, AsyncContainerModule } from 'inversify'
 
-import TYPES from './types'
+import createConnection from '../db/index'
 
-import UserService from '../services/UserService'
+import bindRepositories from './binds/bindRepositories'
+import bindServices from './binds/bindServices'
 
-const container = new Container()
-container.bind<UserService>(TYPES.UserService).to(UserService)
+export const bindings = new AsyncContainerModule(async (bind) => {
+  await createConnection()
 
-export default container
+  await import('../controllers')
+
+  bindRepositories(bind)
+  bindServices(bind)
+})
+
+const createContainer = async () => {
+  const container = new Container()
+
+  await container.loadAsync(bindings)
+
+  return container
+}
+
+export default createContainer

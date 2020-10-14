@@ -3,11 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import { InversifyExpressServer } from 'inversify-express-utils'
 
-import './database'
-
-import './app/controllers'
-
-import container from './app/config/inversify'
+import createContainer from './app/config/inversify'
 
 class App {
   public app: express.Application
@@ -22,8 +18,10 @@ class App {
     this.app.use(morgan(':method :url :status :response-time'))
   }
 
-  public init() {
+  public async init() {
     this.midlewares()
+
+    const container = await createContainer()
 
     const server = new InversifyExpressServer(
       container,

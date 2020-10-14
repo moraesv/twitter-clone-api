@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import { inject } from 'inversify'
 import { controller, httpGet } from 'inversify-express-utils'
 
@@ -12,5 +13,11 @@ export default class UserController {
   @httpGet('/')
   public index() {
     return this.userService.findAll()
+  }
+
+  @httpGet('/:id')
+  public show(req: Request) {
+    const { id } = req.params
+    return this.userService.findById(Number(id))
   }
 }
