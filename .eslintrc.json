@@ -33,7 +33,8 @@
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-useless-constructor": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off"
   },
   "settings": {
     "import/resolver": {
