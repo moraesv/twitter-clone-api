@@ -11,11 +11,13 @@
     "typeorm": "env-cmd -f ./.env node --require ts-node/register ./node_modules/typeorm/cli.js",
     "start": "env-cmd -f ./.env ts-node src/server.ts",
     "dev": "env-cmd  -f ./.env ts-node-dev --ignore-watch node_modules src/server.ts",
-    "db:drop": "typeorm schema:drop",
-    "migration:run": "typeorm migration:run",
-    "migration:undo": "typeorm migration:revert",
-    "migration:create": "typeorm migration:create -n",
-    "migration:show": "typeorm migration:show"
+    "db:recreate": "yarn db:drop && yarn db:create && yarn migration:run",
+    "db:create": "env-cmd -f ./.env pg-god db-create",
+    "db:drop": "env-cmd -f ./.env pg-god db-drop",
+    "migration:run": "yarn typeorm migration:run",
+    "migration:revert": "yarn typeorm migration:revert",
+    "migration:create": "yarn typeorm migration:create -n",
+    "migration:show": "yarn typeorm migration:show"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.4",
@@ -49,6 +51,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.14.1",
     "pg": "^8.3.0",
+    "pg-god": "^1.0.11",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.2.25"
   }
