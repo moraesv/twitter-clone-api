@@ -1,7 +1,9 @@
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../config/types'
+
 import User from '../models/User'
+
 import UserRepository from '../repositories/UserRepository'
 
 @injectable()
