@@ -7,7 +7,7 @@ export default class UserRepository extends Repository<User> {
     super()
     const conn = getConnection()
 
-    const userRepository = conn.getRepository(User)
+    const userRepository = conn.getRepository<User>(User)
 
     return userRepository
   }
