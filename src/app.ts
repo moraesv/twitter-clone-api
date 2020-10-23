@@ -4,6 +4,8 @@ import morgan from 'morgan'
 import { InversifyExpressServer } from 'inversify-express-utils'
 
 import createContainer from './app/config/inversify'
+import Routes from './app/routes'
+import TYPES from './app/config/types'
 
 class App {
   public app: express.Application
@@ -23,14 +25,9 @@ class App {
 
     const container = await createContainer()
 
-    const server = new InversifyExpressServer(
-      container,
-      null,
-      {
-        rootPath: '/api',
-      },
-      this.app,
-    )
+    const routes = container.get<Routes>(TYPES.Routes)
+
+    const server = new InversifyExpressServer(container, routes.router, null, this.app, null, false)
 
     return server.build()
   }
