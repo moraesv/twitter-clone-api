@@ -1,39 +1,25 @@
-export default class Request {
-  constructor(req) {
-    this.init(req)
+import { Request } from 'express'
+
+export default class CustomRequest {
+  private req: Request
+
+  constructor(reqponse: Request) {
+    this.req = reqponse
   }
 
-  init(req) {
-    function getBody() {
-      return {
-        ...req.body,
-      }
-    }
+  public body() {
+    return this.req.body
+  }
 
-    function queryParams() {
-      return {
-        ...req.query,
-      }
-    }
+  public routeParams() {
+    return this.req.params
+  }
 
-    function routeParams() {
-      return {
-        ...req.params,
-      }
-    }
+  public queryParams() {
+    return this.req.query
+  }
 
-    function getUser() {
-      return req.user
-    }
-
-    function setUser(user) {
-      req.user = user
-    }
-
-    req.getBody = getBody
-    req.queryParams = queryParams
-    req.routeParams = routeParams
-    req.getUser = getUser
-    req.setUser = setUser
+  public file() {
+    return this.req.file
   }
 }

@@ -1,62 +1,42 @@
-import { Response as ResponseExpress } from 'express'
+import { Response } from 'express'
 import httpStatus from 'http-status'
 
-export interface ICustomResponse extends ResponseExpress {
-  okResponse: (data: unknown) => ResponseExpress
-  createdResponse: (data: unknown) => ResponseExpress
-  noContentResponse: () => ResponseExpress
-  notFoundResponse: (error: Error) => ResponseExpress
-  badRequestResponse: (error: Error) => ResponseExpress
-  unauthorizedResponse: (error: Error) => ResponseExpress
-  conflictResponse: (error: Error) => ResponseExpress
-  internalErrorResponse: (error: Error) => ResponseExpress
-}
-
 export default class CustomResponse {
-  constructor(res: ICustomResponse) {
-    this.init(res)
+  private res: Response
+
+  constructor(response: Response) {
+    this.res = response
   }
 
-  init(res: ResponseExpress) {
-    function okResponse(data: unknown) {
-      return res.status(httpStatus.OK).json(data)
-    }
+  public okResponse(data: unknown) {
+    return this.res.status(httpStatus.OK).json(data)
+  }
 
-    function createdResponse(data: unknown) {
-      return res.status(httpStatus.CREATED).json(data)
-    }
+  public createdResponse(data: unknown) {
+    return this.res.status(httpStatus.CREATED).json(data)
+  }
 
-    function noContentResponse() {
-      return res.status(httpStatus.NO_CONTENT).send()
-    }
+  public noContentResponse() {
+    return this.res.status(httpStatus.NO_CONTENT).send()
+  }
 
-    function notFoundResponse(error: Error) {
-      return res.status(httpStatus.NOT_FOUND).json(error)
-    }
+  public notFoundResponse(error: Error) {
+    return this.res.status(httpStatus.NOT_FOUND).json(error)
+  }
 
-    function badRequestResponse(error: Error) {
-      return res.status(httpStatus.BAD_REQUEST).json(error)
-    }
+  public badRequestResponse(error: Error) {
+    return this.res.status(httpStatus.BAD_REQUEST).json(error)
+  }
 
-    function unauthorizedResponse(error: Error) {
-      return res.status(httpStatus.UNAUTHORIZED).json(error)
-    }
+  public unauthorizedResponse(error: Error) {
+    return this.res.status(httpStatus.UNAUTHORIZED).json(error)
+  }
 
-    function conflictResponse(error: Error) {
-      return res.status(httpStatus.CONFLICT).json(error)
-    }
+  public conflictResponse(error: Error) {
+    return this.res.status(httpStatus.CONFLICT).json(error)
+  }
 
-    function internalErrorResponse(error: Error = { message: 'Internal server error', name: 'Internal' }) {
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
-    }
-
-    res.okResponse = okResponse
-    res.createdResponse = createdResponse
-    res.noContentResponse = noContentResponse
-    res.notFoundResponse = notFoundResponse
-    res.badRequestResponse = badRequestResponse
-    res.unauthorizedResponse = unauthorizedResponse
-    res.conflictResponse = conflictResponse
-    res.internalErrorResponse = internalErrorResponse
+  public internalErrorResponse(error: Error = { message: 'Internal server error', name: 'Internal' }) {
+    return this.res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
   }
 }

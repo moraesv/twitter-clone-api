@@ -7,11 +7,12 @@ import Response from '../base/Response' */
 import UserRoutes from './UserRoutes'
 import FileRoutes from './FileRoutes'
 import CustomResponse from '../base/CustomResponse'
+import CustomRequest from '../base/CustomRequest'
 
 export interface IRoute {
   method: string
   path: string
-  action: (req: Request, res: Response) => Promise<Response>
+  action: (req: CustomRequest, res: CustomResponse) => Promise<Response>
   middlewares: RequestHandler[]
 }
 
@@ -33,20 +34,20 @@ export default class Routes {
   private init() {
     this.createRoutes(this.userRoutes.routes, this.fileRoutes.routes)
 
-    /* this.router.use('/', (request, response, next) => {
-      // eslint-disable-next-line no-new
-      new CustomResponse(response)
-      // new Response(response)
-
-      next()
-    })
- */
     this.router.use('/api', this.router)
   }
 
   private createRoutes(...allRoutes: IRoute[][]) {
     allRoutes.map((routes) =>
-      routes.forEach((route) => this.router[route.method](route.path, ...route.middlewares, route.action)),
+      routes.forEach((route) => {
+        const action = async (req: Request, res: Response) => {
+          const customRequest = new CustomRequest(req)
+          const customResponse = new CustomResponse(res)
+
+          await route.action(customRequest, customResponse)
+        }
+        this.router[route.method](route.path, ...route.middlewares, action)
+      }),
     )
   }
 }
