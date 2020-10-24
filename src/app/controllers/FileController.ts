@@ -4,16 +4,18 @@ import httpStatus from 'http-status'
 
 import TYPES from '../config/types'
 
-import UserService from '../services/UserService'
+import FileService from '../services/FileService'
 
 @injectable()
-export default class UserController {
-  constructor(@inject(TYPES.UserService) private userService: UserService) {}
+export default class FileController {
+  constructor(@inject(TYPES.FileService) private fileService: FileService) {}
 
-  public async index(req: Request, res: Response) {
+  public async show(req: Request, res: Response) {
     try {
-      const users = await this.userService.findAll()
-      return res.status(httpStatus.OK).send(users)
+      const { id, filename } = req.params
+
+      const file = await this.fileService.findByIdAndName(Number(id), filename)
+      return res.status(httpStatus.OK).send(file)
     } catch (e) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).send()
     }
@@ -21,9 +23,10 @@ export default class UserController {
 
   public async store(req: Request, res: Response) {
     try {
-      const { body } = req
-      const user = await this.userService.store(body)
-      return res.status(httpStatus.OK).send(user)
+      const { file } = req
+
+      const createdFile = await this.fileService.store(file)
+      return res.status(httpStatus.OK).send(createdFile)
     } catch (e) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).send()
     }
@@ -32,7 +35,7 @@ export default class UserController {
   public async delete(req: Request, res: Response) {
     try {
       const { id } = req.params
-      await this.userService.delete(Number(id))
+      await this.fileService.delete(Number(id))
       return res.status(httpStatus.NO_CONTENT).send()
     } catch (e) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).send()

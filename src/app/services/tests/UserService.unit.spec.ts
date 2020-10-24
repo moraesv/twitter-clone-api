@@ -1,6 +1,6 @@
 import faker from 'faker/locale/pt_BR'
 
-import User from '../../models/User'
+import UserModel from '../../models/UserModel'
 import UserRepository from '../../repositories/UserRepository'
 import UserService from '../UserService'
 
@@ -53,7 +53,7 @@ describe('UserService', () => {
 
   describe('store', () => {
     it('create a user and return this', async () => {
-      const createdUser = await userService.store(user as User)
+      const createdUser = await userService.store(user as UserModel)
 
       expect(createdUser).toBe(user)
     })
@@ -68,7 +68,7 @@ describe('UserService', () => {
 
       userService = new UserService(userRepository as UserRepository)
 
-      const updatedUser = await userService.update(1, differentUser as User)
+      const updatedUser = await userService.update(1, differentUser as UserModel)
 
       expect(updatedUser).toBe(differentUser)
     })

@@ -11,9 +11,9 @@ export class createFiles1603469821407 implements MigrationInterface {
 
           { name: 'userId', type: 'int', isNullable: false },
 
-          { name: 'name', type: 'varchar', isNullable: false },
+          { name: 'filename', type: 'varchar', isNullable: false },
 
-          { name: 'mimeType', type: 'varchar', isNullable: false },
+          { name: 'mimetype', type: 'varchar', isNullable: false },
 
           { name: 'size', type: 'int', isNullable: false },
 

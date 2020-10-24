@@ -2,33 +2,38 @@ import { inject, injectable } from 'inversify'
 
 import TYPES from '../config/types'
 
-import User from '../models/User'
-
+import FileRepository from '../repositories/FileRepository'
 import UserRepository from '../repositories/UserRepository'
 
 @injectable()
-export default class UserService {
-  constructor(@inject(TYPES.UserRepository) private userRepository: UserRepository) {}
+export default class FileService {
+  constructor(
+    @inject(TYPES.FileRepository) private fileRepository: FileRepository,
+    @inject(TYPES.UserRepository) private userRepository: UserRepository,
+  ) {}
 
-  public findAll() {
-    return this.userRepository.find()
+  public async findByIdAndName(id: number, filename: string) {
+    return this.fileRepository.findOne({
+      where: {
+        id,
+        filename,
+      },
+    })
   }
 
-  public findById(id: number) {
-    return this.userRepository.findOne(id)
-  }
+  public async store(file: Express.Multer.File) {
+    const user = await this.userRepository.findOne({ where: { id: 1 } })
 
-  public store(user: User) {
-    return this.userRepository.save(user)
-  }
-
-  public async update(id: number, user: User) {
-    await this.userRepository.update(id, user)
-
-    return this.userRepository.findOne(id)
+    return this.fileRepository.save({ ...file, user })
   }
 
   public async delete(id: number) {
-    await this.userRepository.softDelete(id)
+    await this.fileRepository.softDelete(id)
+  }
+
+  public async setTemporary(id: number, temporary = false) {
+    return this.fileRepository.update(id, {
+      temporary,
+    })
   }
 }

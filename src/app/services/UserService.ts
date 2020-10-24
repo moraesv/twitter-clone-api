@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 
 import TYPES from '../config/types'
 
-import User from '../models/User'
+import UserModel from '../models/UserModel'
 
 import UserRepository from '../repositories/UserRepository'
 
@@ -18,11 +18,11 @@ export default class UserService {
     return this.userRepository.findOne(id)
   }
 
-  public store(user: User) {
+  public store(user: UserModel) {
     return this.userRepository.save(user)
   }
 
-  public async update(id: number, user: User) {
+  public async update(id: number, user: UserModel) {
     await this.userRepository.update(id, user)
 
     return this.userRepository.findOne(id)

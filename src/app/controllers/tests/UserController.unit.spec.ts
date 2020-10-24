@@ -1,7 +1,7 @@
 /* import { Request, Response } from 'express'
 import faker from 'faker/locale/pt_BR'
 
-import User from '../../models/User'
+import UserModel from '../../models/UserModel'
 import UserRepository from '../../repositories/UserRepository'
 import UserService from '../../services/UserService'
 import UserController from '../UserController' */

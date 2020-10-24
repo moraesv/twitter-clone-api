@@ -42,3 +42,6 @@ package-lock.json
 
 # ignore yarn.lock
 yarn.lock
+
+
+uploads/

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./src/app/base/types"],
     "lib": ["es5", "es6"],
     "target": "es5",
     "module": "commonjs",
@@ -8,6 +9,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
   }
 }

@@ -5,29 +5,29 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
+  OneToMany,
 } from 'typeorm'
-import User from './User'
+import FileModel from './FileModel'
 
-@Entity('files')
-export default class File {
+@Entity('users')
+export default class UserModel {
   @PrimaryGeneratedColumn()
   id: number
-
-  @ManyToOne(() => User, (user) => user.files)
-  user: User
 
   @Column()
   name: string
 
   @Column()
-  mimeType: string
+  username: string
 
   @Column()
-  size: number
+  email: string
 
   @Column()
-  temporary: boolean
+  passwordHash: string
+
+  @OneToMany(() => FileModel, (file) => file.user)
+  files: FileModel[]
 
   @CreateDateColumn()
   createdAt: Date
