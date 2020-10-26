@@ -1,18 +1,17 @@
 import { Request, RequestHandler, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import TYPES from '../config/types'
-/* import Request from '../base/Request'
-import Response from '../base/Response' */
 
 import UserRoutes from './UserRoutes'
 import FileRoutes from './FileRoutes'
 import CustomResponse from '../base/CustomResponse'
 import CustomRequest from '../base/CustomRequest'
+import LoginRoutes from './LoginRoutes'
 
 export interface IRoute {
   method: string
   path: string
-  action: (req: CustomRequest, res: CustomResponse) => Promise<Response>
+  action: (req: CustomRequest, res: CustomResponse) => Promise<Response> | Response
   middlewares: RequestHandler[]
 }
 
@@ -25,6 +24,7 @@ export default class Routes {
   constructor(
     @inject(TYPES.UserRoutes) private userRoutes: UserRoutes,
     @inject(TYPES.FileRoutes) private fileRoutes: FileRoutes,
+    @inject(TYPES.LoginRoutes) private loginRoutes: LoginRoutes,
   ) {
     this.router = Router()
 
@@ -32,9 +32,7 @@ export default class Routes {
   }
 
   private init() {
-    this.createRoutes(this.userRoutes.routes, this.fileRoutes.routes)
-
-    this.router.use('/api', this.router)
+    this.createRoutes(this.userRoutes.routes, this.fileRoutes.routes, this.loginRoutes.routes)
   }
 
   private createRoutes(...allRoutes: IRoute[][]) {

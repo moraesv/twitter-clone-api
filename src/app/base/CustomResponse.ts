@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { CookieOptions, Response } from 'express'
 import httpStatus from 'http-status'
 
 export default class CustomResponse {
@@ -37,6 +37,12 @@ export default class CustomResponse {
   }
 
   public internalErrorResponse(error: Error = { message: 'Internal server error', name: 'Internal' }) {
+    console.error(error)
+
     return this.res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
+  }
+
+  public cookie(name: string, val: string, options: CookieOptions) {
+    return this.res.cookie(name, val, options)
   }
 }

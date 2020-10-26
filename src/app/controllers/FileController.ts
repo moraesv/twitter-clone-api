@@ -3,8 +3,11 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../config/types'
 
 import CustomResponse from '../base/CustomResponse'
-import FileService from '../services/FileService'
 import CustomRequest from '../base/CustomRequest'
+
+import FileService from '../services/FileService'
+
+import fileView from '../views/fileView'
 
 @injectable()
 export default class FileController {
@@ -15,7 +18,7 @@ export default class FileController {
       const { id, filename } = req.routeParams()
 
       const file = await this.fileService.findByIdAndName(Number(id), filename)
-      return res.okResponse(file)
+      return res.okResponse(fileView.render(file))
     } catch (e) {
       return res.internalErrorResponse()
     }
@@ -26,7 +29,7 @@ export default class FileController {
       const file = req.file()
 
       const createdFile = await this.fileService.store(file)
-      return res.okResponse(createdFile)
+      return res.okResponse(fileView.render(createdFile))
     } catch (e) {
       return res.internalErrorResponse()
     }

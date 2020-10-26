@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { user } from './auth'
 
 export default class CustomRequest {
   private req: Request
@@ -21,5 +22,13 @@ export default class CustomRequest {
 
   public file() {
     return this.req.file
+  }
+
+  public cookies() {
+    return this.req.cookies
+  }
+
+  public getUser() {
+    return user()
   }
 }

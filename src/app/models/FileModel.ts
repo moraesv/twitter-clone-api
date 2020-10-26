@@ -6,7 +6,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  AfterLoad,
 } from 'typeorm'
+
+import appConfig from '../config/appConfig'
+
 import UserModel from './UserModel'
 
 @Entity('files')
@@ -28,6 +32,13 @@ export default class FileModel {
 
   @Column()
   temporary: boolean
+
+  public url: string
+
+  @AfterLoad()
+  getUrl() {
+    this.url = `${appConfig.fullUrl}/uploads/${this.filename}`
+  }
 
   @CreateDateColumn()
   createdAt: Date
