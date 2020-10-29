@@ -6,14 +6,17 @@ import httpContext from 'express-http-context'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { Container } from 'inversify'
 
+import TYPES from './app/config/types'
+import createContainer from './app/config/inversify'
+import jwtConfig from './app/config/jwtConfig'
+
+import Passport from './app/base/Passport'
+
+import errorHandler from './app/middlewares/errorHandler'
+
 import Routes from './app/routes'
 
-import UserRepository from './app/repositories/UserRepository'
-
-import createContainer from './app/config/inversify'
-import TYPES from './app/config/types'
-import jwtConfig from './app/config/jwtConfig'
-import Passport from './app/base/Passport'
+import UserRepository from './app/containers/User/UserRepository'
 
 class App {
   public app: express.Application
@@ -25,9 +28,10 @@ class App {
   private midlewares(): void {
     this.app.use(express.json())
     this.app.use(cors())
-    this.app.use(morgan(':method :url :status :response-time'))
+    this.app.use(morgan(':method :url :status :response-time :date[clf]'))
     this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
     this.app.use(httpContext.middleware)
+    this.app.use(errorHandler)
   }
 
   private passport(container: Container): void {

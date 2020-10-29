@@ -1,5 +1,8 @@
 import { CookieOptions, Response } from 'express'
 import httpStatus from 'http-status'
+import { ValidationError } from 'yup'
+
+import ValidationErrors from '../types/ValidationErrors'
 
 export default class CustomResponse {
   private res: Response
@@ -24,8 +27,8 @@ export default class CustomResponse {
     return this.res.status(httpStatus.NOT_FOUND).json(error)
   }
 
-  public badRequestResponse(error: Error) {
-    return this.res.status(httpStatus.BAD_REQUEST).json(error)
+  public badRequestResponse(errors: ValidationErrors) {
+    return this.res.status(httpStatus.BAD_REQUEST).json(errors)
   }
 
   public unauthorizedResponse(error: Error) {
@@ -37,7 +40,15 @@ export default class CustomResponse {
   }
 
   public internalErrorResponse(error: Error = { message: 'Internal server error', name: 'Internal' }) {
-    console.error(error)
+    if (error instanceof ValidationError) {
+      const errors: ValidationErrors = {}
+
+      error.inner.forEach((err) => {
+        errors[err.path] = err.message
+      })
+
+      return this.badRequestResponse(errors)
+    }
 
     return this.res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
   }

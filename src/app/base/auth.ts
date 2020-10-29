@@ -1,6 +1,6 @@
 import httpContext from 'express-http-context'
 
-import UserModel from '../models/UserModel'
+import UserModel from '../containers/User/UserModel'
 
 export const setUser = (user: UserModel) => {
   httpContext.set('user', user)

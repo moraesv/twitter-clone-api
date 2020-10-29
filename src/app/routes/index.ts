@@ -2,11 +2,12 @@ import { Request, RequestHandler, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import TYPES from '../config/types'
 
-import UserRoutes from './UserRoutes'
-import FileRoutes from './FileRoutes'
 import CustomResponse from '../base/CustomResponse'
 import CustomRequest from '../base/CustomRequest'
-import LoginRoutes from './LoginRoutes'
+
+import UserRoutes from '../containers/User/UserRoutes'
+import FileRoutes from '../containers/File/FileRoutes'
+import LoginRoutes from '../containers/Login/LoginRoutes'
 
 export interface IRoute {
   method: string

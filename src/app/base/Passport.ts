@@ -7,9 +7,9 @@ import { Strategy as JwtStrategy } from 'passport-jwt'
 import { setUser } from './auth'
 import jwt from '../config/jwtConfig'
 
-import UserModel from '../models/UserModel'
+import UserModel from '../containers/User/UserModel'
 
-import UserRepository from '../repositories/UserRepository'
+import UserRepository from '../containers/User/UserRepository'
 
 export default class Passport {
   private passport: PassportStatic

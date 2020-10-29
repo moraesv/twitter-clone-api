@@ -1,21 +1,22 @@
 import { Container, AsyncContainerModule } from 'inversify'
 
-import createConnection from '../db/index'
-import bindConfigs from './binds/bindConfigs'
-import bindControllers from './binds/bindControllers'
+import createConnection from './db/index'
 
-import bindRepositories from './binds/bindRepositories'
-import bindRoutes from './binds/bindRoutes'
-import bindServices from './binds/bindServices'
+import configBinds from './binds/binds'
+import userBinds from '../containers/User/binds/binds'
+import fileBinds from '../containers/File/binds/binds'
+import loginBinds from '../containers/Login/binds/binds'
+import routesBinds from '../routes/binds/binds'
 
 export const bindings = new AsyncContainerModule(async (bind) => {
   await createConnection()
 
-  bindRepositories(bind)
-  bindServices(bind)
-  bindControllers(bind)
-  bindRoutes(bind)
-  bindConfigs(bind)
+  configBinds(bind)
+
+  routesBinds(bind)
+  userBinds(bind)
+  fileBinds(bind)
+  loginBinds(bind)
 })
 
 const createContainer = async () => {

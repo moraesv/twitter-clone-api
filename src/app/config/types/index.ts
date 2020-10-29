@@ -1,15 +1,16 @@
-import configsTypes from './configsTypes'
-import routesTypes from './routesTypes'
-import controllersTypes from './controllersTypes'
-import servicesTypes from './servicesTypes'
-import repositoriesTypes from './repositoriesTypes'
+import configTypes from '../binds/types'
+
+import routesTypes from '../../routes/binds/types'
+import userTypes from '../../containers/User/binds/types'
+import fileTypes from '../../containers/File/binds/types'
+import loginTypes from '../../containers/Login/binds/types'
 
 const TYPES = {
-  ...configsTypes,
+  ...configTypes,
   ...routesTypes,
-  ...controllersTypes,
-  ...servicesTypes,
-  ...repositoriesTypes,
+  ...userTypes,
+  ...fileTypes,
+  ...loginTypes,
 }
 
 export default TYPES
