@@ -11,6 +11,7 @@ export class createUser1597185323053 implements MigrationInterface {
           { name: 'username', type: 'varchar' },
           { name: 'email', type: 'varchar' },
           { name: 'passwordHash', type: 'varchar' },
+          { name: 'birthDate', type: 'timestamp' },
           { name: 'createdAt', type: 'timestamp', default: 'now()' },
           { name: 'updatedAt', type: 'timestamp', default: 'now()' },
           { name: 'deletedAt', type: 'timestamp', isNullable: true },
