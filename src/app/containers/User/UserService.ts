@@ -4,6 +4,7 @@ import { ValidationError } from 'yup'
 
 import TYPES from '../../config/types'
 import ValidationErrors from '../../types/ValidationErrors'
+import validateSchema from '../../utils/validateSchema'
 
 import UserModel from './UserModel'
 
@@ -28,26 +29,20 @@ export default class UserService {
     return userView.render(user)
   }
 
-  public async storeValidate(user: UserModel): Promise<ValidationErrors> {
-    await userStoreSchema.validate(user, { abortEarly: false })
+  public async storeValidate(body: UserModel) {
+    const { ready, errors } = await validateSchema<typeof userStoreSchema, UserModel>(userStoreSchema, body)
 
-    const errors: ValidationErrors = {}
-
-    const userEmailExists = await this.userRepository.findOne({ where: { email: user.email } })
+    const userEmailExists = await this.userRepository.findOne({ where: { email: ready.email } })
     if (userEmailExists) {
       errors.emailExists = 'E-mail já cadastrado'
     }
 
-    const userUsernameExists = await this.userRepository.findOne({ where: { username: user.username } })
+    const userUsernameExists = await this.userRepository.findOne({ where: { username: ready.username } })
     if (userUsernameExists) {
       errors.usernameExists = 'Nome de usuário já cadastrado'
     }
 
-    if (Object.keys(errors).length !== 0) {
-      return errors
-    }
-
-    return null
+    return { ready, errors, hasErrors: Object.keys(errors).length }
   }
 
   public async store(user: UserModel) {
@@ -58,20 +53,8 @@ export default class UserService {
     return userView.render(createdUser)
   }
 
-  public async updateValidate(body: UserModel): Promise<{ userBody?: UserModel; errors?: ValidationErrors }> {
-    return userUpdateSchema
-      .validate(body, { abortEarly: false })
-      .then((userBody: UserModel) => ({
-        userBody,
-      }))
-      .catch((e: ValidationError) => {
-        const errors: ValidationErrors = {}
-        e.inner.forEach((err) => {
-          errors[err.path || 'unknown'] = err.message
-        })
-
-        return { errors }
-      })
+  public async updateValidate(body: UserModel) {
+    return validateSchema<typeof userUpdateSchema, UserModel>(userUpdateSchema, body)
   }
 
   public async update(id: number, user: UserModel) {

@@ -33,13 +33,13 @@ export default class UserController {
     try {
       const body = req.body()
 
-      const errors = await this.userService.storeValidate(body)
+      const { ready, errors, hasErrors } = await this.userService.storeValidate(body)
 
-      if (errors) {
+      if (hasErrors) {
         return res.badRequestResponse(errors)
       }
 
-      const user = await this.userService.store(body)
+      const user = await this.userService.store(ready)
       return res.okResponse(user)
     } catch (e) {
       return res.internalErrorResponse(e)
@@ -51,13 +51,13 @@ export default class UserController {
       const { id } = req.routeParams()
       const body = req.body()
 
-      const { userBody, errors } = await this.userService.updateValidate(body)
+      const { ready, errors, hasErrors } = await this.userService.updateValidate(body)
 
-      if (errors) {
+      if (hasErrors) {
         return res.badRequestResponse(errors)
       }
 
-      const user = await this.userService.update(Number(id), userBody)
+      const user = await this.userService.update(Number(id), ready)
       return res.okResponse(user)
     } catch (e) {
       return res.internalErrorResponse(e)
