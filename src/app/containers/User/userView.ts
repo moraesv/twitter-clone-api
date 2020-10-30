@@ -8,6 +8,9 @@ const userView = {
       username: user.username,
       email: user.email,
       birthDate: user.birthDate,
+      bio: user.bio,
+      location: user.location,
+      website: user.website,
     }
   },
 }

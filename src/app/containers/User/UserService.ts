@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { inject, injectable } from 'inversify'
+import { ValidationError } from 'yup'
 
 import TYPES from '../../config/types'
 import ValidationErrors from '../../types/ValidationErrors'
@@ -9,17 +10,22 @@ import UserModel from './UserModel'
 import UserRepository from './UserRepository'
 import userView from './userView'
 import userStoreSchema from './validation/store'
+import userUpdateSchema from './validation/update'
 
 @injectable()
 export default class UserService {
   constructor(@inject(TYPES.UserRepository) private userRepository: UserRepository) {}
 
-  public findAll() {
-    return this.userRepository.find()
+  public async findAll() {
+    const users = await this.userRepository.find()
+
+    return users.map((user) => userView.render(user))
   }
 
-  public findById(id: number) {
-    return this.userRepository.findOne(id)
+  public async findById(id: number) {
+    const user = await this.userRepository.findOne(id)
+
+    return userView.render(user)
   }
 
   public async storeValidate(user: UserModel): Promise<ValidationErrors> {
@@ -52,10 +58,28 @@ export default class UserService {
     return userView.render(createdUser)
   }
 
+  public async updateValidate(body: UserModel): Promise<{ userBody?: UserModel; errors?: ValidationErrors }> {
+    return userUpdateSchema
+      .validate(body, { abortEarly: false })
+      .then((userBody: UserModel) => ({
+        userBody,
+      }))
+      .catch((e: ValidationError) => {
+        const errors: ValidationErrors = {}
+        e.inner.forEach((err) => {
+          errors[err.path || 'unknown'] = err.message
+        })
+
+        return { errors }
+      })
+  }
+
   public async update(id: number, user: UserModel) {
     await this.userRepository.update(id, user)
 
-    return this.userRepository.findOne(id)
+    const updatedUser = await this.userRepository.findOne(id)
+
+    return userView.render(updatedUser)
   }
 
   public async delete(id: number) {

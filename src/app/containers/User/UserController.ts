@@ -15,7 +15,7 @@ export default class UserController {
       const users = await this.userService.findAll()
       return res.okResponse(users)
     } catch (e) {
-      return res.internalErrorResponse()
+      return res.internalErrorResponse(e)
     }
   }
 
@@ -25,13 +25,14 @@ export default class UserController {
       const user = await this.userService.findById(Number(id))
       return res.okResponse(user)
     } catch (e) {
-      return res.internalErrorResponse()
+      return res.internalErrorResponse(e)
     }
   }
 
   public async store(req: CustomRequest, res: CustomResponse) {
     try {
       const body = req.body()
+
       const errors = await this.userService.storeValidate(body)
 
       if (errors) {
@@ -49,10 +50,17 @@ export default class UserController {
     try {
       const { id } = req.routeParams()
       const body = req.body()
-      const user = await this.userService.update(Number(id), body)
+
+      const { userBody, errors } = await this.userService.updateValidate(body)
+
+      if (errors) {
+        return res.badRequestResponse(errors)
+      }
+
+      const user = await this.userService.update(Number(id), userBody)
       return res.okResponse(user)
     } catch (e) {
-      return res.internalErrorResponse()
+      return res.internalErrorResponse(e)
     }
   }
 
@@ -62,7 +70,7 @@ export default class UserController {
       await this.userService.delete(Number(id))
       return res.noContentResponse()
     } catch (e) {
-      return res.internalErrorResponse()
+      return res.internalErrorResponse(e)
     }
   }
 }

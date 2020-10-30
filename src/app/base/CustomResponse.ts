@@ -44,12 +44,13 @@ export default class CustomResponse {
       const errors: ValidationErrors = {}
 
       error.inner.forEach((err) => {
-        errors[err.path] = err.message
+        errors[err.path || 'unknown'] = err.message
       })
 
       return this.badRequestResponse(errors)
     }
 
+    console.error(error)
     return this.res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
   }
 

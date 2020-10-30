@@ -31,6 +31,15 @@ export default class UserModel {
   passwordHash: string
 
   @Column()
+  bio: string
+
+  @Column()
+  location: string
+
+  @Column()
+  website: string
+
+  @Column()
   birthDate: Date
 
   @OneToMany(() => FileModel, (file) => file.user)
