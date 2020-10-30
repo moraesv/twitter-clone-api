@@ -50,6 +50,7 @@ export default class CustomResponse {
       return this.badRequestResponse(errors)
     }
 
+    // eslint-disable-next-line no-console
     console.error(error)
     return this.res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
   }

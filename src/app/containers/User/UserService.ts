@@ -1,9 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { inject, injectable } from 'inversify'
-import { ValidationError } from 'yup'
 
 import TYPES from '../../config/types'
-import ValidationErrors from '../../types/ValidationErrors'
 import validateSchema from '../../utils/validateSchema'
 
 import UserModel from './UserModel'
