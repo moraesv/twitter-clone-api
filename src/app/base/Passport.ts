@@ -38,8 +38,6 @@ export default class Passport {
           password: string,
           done: (error: Error, user?: UserModel, options?: IVerifyOptions) => void,
         ) => {
-          console.log('checfoy')
-
           const user = await this.userRepository.findOne({
             where: {
               email,

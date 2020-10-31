@@ -1,4 +1,4 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express'
+import { NextFunction } from 'express'
 import CustomRequest from '../base/CustomRequest'
 
 import CustomResponse from '../base/CustomResponse'
