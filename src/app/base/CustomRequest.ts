@@ -1,5 +1,6 @@
 import { Request } from 'express'
-import { user } from './auth'
+import UserModel from '../containers/User/UserModel'
+import { setUser, getUser } from './auth'
 
 export default class CustomRequest {
   private req: Request
@@ -29,6 +30,10 @@ export default class CustomRequest {
   }
 
   public getUser() {
-    return user()
+    return getUser()
+  }
+
+  public setUser(user: UserModel) {
+    return setUser(user)
   }
 }

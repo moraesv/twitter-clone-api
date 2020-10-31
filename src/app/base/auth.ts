@@ -6,6 +6,6 @@ export const setUser = (user: UserModel) => {
   httpContext.set('user', user)
 }
 
-export const user = (): UserModel | null => {
+export const getUser = (): UserModel | null => {
   return httpContext.get('user')
 }

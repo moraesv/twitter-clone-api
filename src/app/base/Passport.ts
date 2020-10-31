@@ -38,6 +38,8 @@ export default class Passport {
           password: string,
           done: (error: Error, user?: UserModel, options?: IVerifyOptions) => void,
         ) => {
+          console.log('checfoy')
+
           const user = await this.userRepository.findOne({
             where: {
               email,
@@ -60,7 +62,7 @@ export default class Passport {
           algorithms: [this.jwtConfig.algorithm],
           secretOrKey: this.jwtConfig.secret,
           jwtFromRequest: (req: any) => {
-            const { access_token: token } = req.cookies()
+            const { access_token: token } = req.cookies
 
             if (!token) {
               return null

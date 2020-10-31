@@ -4,6 +4,7 @@ import FileController from './FileController'
 import { IRoute } from '../../routes'
 
 import upload from '../../config/upload'
+import { auth } from '../../middlewares/auth'
 
 @injectable()
 export default class FileRoutes {
@@ -25,7 +26,7 @@ export default class FileRoutes {
         method: 'post',
         path: '/files',
         action: this.fileController.store.bind(this.fileController),
-        middlewares: [upload.single('file')],
+        middlewares: [auth, upload.single('file')],
       },
       {
         method: 'delete',

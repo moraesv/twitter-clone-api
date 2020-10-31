@@ -7,7 +7,9 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm'
+
 import FileModel from '../File/FileModel'
+import TweetModel from '../Tweet/TweetModel'
 
 @Entity('users')
 export default class UserModel {
@@ -44,6 +46,9 @@ export default class UserModel {
 
   @OneToMany(() => FileModel, (file) => file.user)
   files: FileModel[]
+
+  @OneToMany(() => TweetModel, (tweet) => tweet.user)
+  tweets: TweetModel[]
 
   @CreateDateColumn()
   createdAt: Date

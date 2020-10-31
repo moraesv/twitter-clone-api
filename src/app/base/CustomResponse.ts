@@ -58,4 +58,8 @@ export default class CustomResponse {
   public cookie(name: string, val: string, options: CookieOptions) {
     return this.res.cookie(name, val, options)
   }
+
+  public clearCookie(name: string, options: CookieOptions) {
+    return this.res.clearCookie(name, options)
+  }
 }

@@ -3,12 +3,14 @@ import cors from 'cors'
 import morgan from 'morgan'
 import path from 'path'
 import httpContext from 'express-http-context'
+import cookieParser from 'cookie-parser'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { Container } from 'inversify'
 
 import TYPES from './app/config/types'
 import createContainer from './app/config/inversify'
 import jwtConfig from './app/config/jwtConfig'
+import sessionConfig from './app/config/session'
 
 import Passport from './app/base/Passport'
 
@@ -32,6 +34,7 @@ class App {
     this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
     this.app.use(httpContext.middleware)
     this.app.use(errorHandler)
+    this.app.use(cookieParser(sessionConfig.secret))
   }
 
   private passport(container: Container): void {

@@ -32,7 +32,7 @@ export default class LoginController {
 
       return res.noContentResponse()
     } catch (e) {
-      return res.internalErrorResponse()
+      return res.internalErrorResponse(e)
     }
   }
 }

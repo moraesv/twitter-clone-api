@@ -5,8 +5,8 @@ import TYPES from '../../config/types'
 import validateSchema from '../../utils/validateSchema'
 
 import UserModel from './UserModel'
-
 import UserRepository from './UserRepository'
+
 import userView from './userView'
 import userStoreSchema from './validation/store'
 import userUpdateSchema from './validation/update'
