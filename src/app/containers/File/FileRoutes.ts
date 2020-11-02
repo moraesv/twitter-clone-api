@@ -20,7 +20,7 @@ export default class FileRoutes {
         method: 'get',
         path: '/files/:id/:filename',
         action: this.fileController.show.bind(this.fileController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'post',
@@ -32,7 +32,7 @@ export default class FileRoutes {
         method: 'delete',
         path: '/files/:id',
         action: this.fileController.delete.bind(this.fileController),
-        middlewares: [],
+        middlewares: [auth],
       },
     ]
   }

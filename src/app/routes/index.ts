@@ -11,6 +11,7 @@ import LoginRoutes from '../containers/Login/LoginRoutes'
 import TweetRoutes from '../containers/Tweet/TweetRoutes'
 import LogoutRoutes from '../containers/Logout/LogoutRoutes'
 import UserRepository from '../containers/User/UserRepository'
+import UserFollowerRoutes from '../containers/UserFollower/UserFollowerRoutes'
 
 export interface CustomRequestHandler {
   (req: CustomRequest, res: CustomResponse, next: NextFunction): any
@@ -30,12 +31,13 @@ export default class Routes {
   public router: Router = null
 
   constructor(
+    @inject(TYPES.UserRepository) private userRepository: UserRepository,
     @inject(TYPES.UserRoutes) private userRoutes: UserRoutes,
     @inject(TYPES.FileRoutes) private fileRoutes: FileRoutes,
     @inject(TYPES.LoginRoutes) private loginRoutes: LoginRoutes,
     @inject(TYPES.LogoutRoutes) private logoutRoutes: LogoutRoutes,
     @inject(TYPES.TweetRoutes) private tweetRoutes: TweetRoutes,
-    @inject(TYPES.UserRepository) private userRepository: UserRepository,
+    @inject(TYPES.UserFollowerRoutes) private userFollowerRoutes: UserFollowerRoutes,
   ) {
     this.router = Router()
 
@@ -49,6 +51,7 @@ export default class Routes {
       this.loginRoutes.routes,
       this.tweetRoutes.routes,
       this.logoutRoutes.routes,
+      this.userFollowerRoutes.routes,
     )
   }
 

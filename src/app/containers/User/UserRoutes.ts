@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../config/types'
 import UserController from './UserController'
 import { IRoute } from '../../routes'
+import { auth } from '../../middlewares/auth'
 
 @injectable()
 export default class UserRoutes {
@@ -17,13 +18,13 @@ export default class UserRoutes {
         method: 'get',
         path: '/users',
         action: this.userController.index.bind(this.userController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'get',
         path: '/users/:id',
         action: this.userController.show.bind(this.userController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'post',
@@ -41,7 +42,7 @@ export default class UserRoutes {
         method: 'delete',
         path: '/users/:id',
         action: this.userController.delete.bind(this.userController),
-        middlewares: [],
+        middlewares: [auth],
       },
     ]
   }

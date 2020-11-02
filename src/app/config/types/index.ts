@@ -6,6 +6,7 @@ import fileTypes from '../../containers/File/binds/types'
 import loginTypes from '../../containers/Login/binds/types'
 import tweetTypes from '../../containers/Tweet/binds/types'
 import logoutTypes from '../../containers/Logout/binds/types'
+import userFollowerTypes from '../../containers/UserFollower/binds/types'
 
 const TYPES = {
   ...configTypes,
@@ -15,6 +16,7 @@ const TYPES = {
   ...loginTypes,
   ...logoutTypes,
   ...tweetTypes,
+  ...userFollowerTypes,
 }
 
 export default TYPES

@@ -6,6 +6,8 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm'
 
 import FileModel from '../File/FileModel'
@@ -49,6 +51,13 @@ export default class UserModel {
 
   @OneToMany(() => TweetModel, (tweet) => tweet.user)
   tweets: TweetModel[]
+
+  @ManyToMany(() => UserModel, (user) => user.following)
+  @JoinTable({ name: 'usersFollowers', joinColumn: { name: 'userId' }, inverseJoinColumn: { name: 'followerId' } })
+  followers: UserModel[]
+
+  @ManyToMany(() => UserModel, (user) => user.followers)
+  following: UserModel[]
 
   @CreateDateColumn()
   createdAt: Date
