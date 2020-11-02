@@ -11,6 +11,8 @@ const userView = {
       bio: user.bio,
       location: user.location,
       website: user.website,
+      profileImgUrl: user.profileImg ? user.profileImg.url : null,
+      profileBackgroundUrl: user.profileBackground ? user.profileBackground.url : null,
     }
   },
 }

@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify'
 
 import TYPES from '../../config/types'
 import validateSchema from '../../utils/validateSchema'
+import FileRepository from '../File/FileRepository'
 
 import UserModel from './UserModel'
 import UserRepository from './UserRepository'
@@ -13,16 +14,19 @@ import userUpdateSchema from './validation/update'
 
 @injectable()
 export default class UserService {
-  constructor(@inject(TYPES.UserRepository) private userRepository: UserRepository) {}
+  constructor(
+    @inject(TYPES.UserRepository) private userRepository: UserRepository,
+    @inject(TYPES.FileRepository) private fileRepository: FileRepository,
+  ) {}
 
   public async findAll() {
-    const users = await this.userRepository.find()
+    const users = await this.userRepository.find({ relations: ['profileImg'] })
 
     return users.map((user) => userView.render(user))
   }
 
   public async findById(id: number) {
-    const user = await this.userRepository.findOne(id)
+    const user = await this.userRepository.findOne(id, { relations: ['profileImg'] })
 
     return userView.render(user)
   }
@@ -56,9 +60,14 @@ export default class UserService {
   }
 
   public async update(id: number, user: UserModel) {
-    await this.userRepository.update(id, user)
+    const { profileImgId, profileBackgroundId, ...data } = user
 
-    const updatedUser = await this.userRepository.findOne(id)
+    const profileImg = await this.fileRepository.findOne(profileImgId)
+    const profileBackground = await this.fileRepository.findOne(profileBackgroundId)
+
+    await this.userRepository.update(id, { ...data, profileImg, profileBackground })
+
+    const updatedUser = await this.userRepository.findOne(id, { relations: ['profileImg', 'profileBackground'] })
 
     return userView.render(updatedUser)
   }

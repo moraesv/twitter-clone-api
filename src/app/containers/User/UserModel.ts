@@ -8,6 +8,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm'
 
 import FileModel from '../File/FileModel'
@@ -45,6 +47,18 @@ export default class UserModel {
 
   @Column()
   birthDate: Date
+
+  profileImgId: number
+
+  @OneToOne(() => FileModel)
+  @JoinColumn({ name: 'profileImgId' })
+  profileImg: FileModel
+
+  profileBackgroundId: number
+
+  @OneToOne(() => FileModel)
+  @JoinColumn({ name: 'profileBackgroundId' })
+  profileBackground: FileModel
 
   @OneToMany(() => FileModel, (file) => file.user)
   files: FileModel[]
