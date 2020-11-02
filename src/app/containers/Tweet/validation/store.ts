@@ -5,6 +5,7 @@ const tweetStoreSchema = {
     .required('Você deve inserir um texto para seu tweet')
     .max(280, 'Máximo de 280 caracteres')
     .min(1, 'Minimo de 1 caracter'),
+  files: Yup.array(Yup.number()),
 }
 
 export default tweetStoreSchema

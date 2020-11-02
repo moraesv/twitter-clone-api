@@ -2,7 +2,8 @@ import { inject, injectable } from 'inversify'
 
 import TYPES from '../../config/types'
 import validateSchema from '../../utils/validateSchema'
-import UserRepository from '../User/UserRepository'
+import UserModel from '../User/UserModel'
+import FileRepository from '../File/FileRepository'
 
 import TweetModel from './TweetModel'
 import TweetRepository from './TweetRepository'
@@ -15,7 +16,7 @@ import tweetUpdateSchema from './validation/update'
 export default class TweetService {
   constructor(
     @inject(TYPES.TweetRepository) private tweetRepository: TweetRepository,
-    @inject(TYPES.UserRepository) private userRepository: UserRepository,
+    @inject(TYPES.FileRepository) private fileRepository: FileRepository,
   ) {}
 
   public async findAll() {
@@ -34,10 +35,9 @@ export default class TweetService {
     return validateSchema<typeof tweetStoreSchema, TweetModel>(tweetStoreSchema, body)
   }
 
-  public async store(tweet: TweetModel) {
-    const user = await this.userRepository.findOne({ where: { id: 1 } })
-
-    const createdTweet = await this.tweetRepository.save({ ...tweet, user })
+  public async store(tweet: TweetModel, user: UserModel) {
+    const files = await this.fileRepository.findByIds(tweet.files)
+    const createdTweet = await this.tweetRepository.save({ ...tweet, user, files })
 
     return tweetView.render(createdTweet)
   }

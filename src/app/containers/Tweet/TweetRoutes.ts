@@ -18,31 +18,31 @@ export default class TweetRoutes {
         method: 'get',
         path: '/tweets',
         action: this.tweetController.index.bind(this.tweetController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'get',
         path: '/tweets/:id',
         action: this.tweetController.show.bind(this.tweetController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'post',
         path: '/tweets',
         action: this.tweetController.store.bind(this.tweetController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'put',
         path: '/tweets/:id',
         action: this.tweetController.update.bind(this.tweetController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'delete',
         path: '/tweets/:id',
         action: this.tweetController.delete.bind(this.tweetController),
-        middlewares: [],
+        middlewares: [auth],
       },
     ]
   }

@@ -6,9 +6,12 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm'
 
 import UserModel from '../User/UserModel'
+import FileModel from '../File/FileModel'
 
 @Entity('tweets')
 export default class TweetModel {
@@ -20,6 +23,10 @@ export default class TweetModel {
 
   @ManyToOne(() => UserModel, (user) => user.files)
   user: UserModel
+
+  @ManyToMany(() => FileModel)
+  @JoinTable({ name: 'tweetsFiles', joinColumn: { name: 'tweetId' }, inverseJoinColumn: { name: 'fileId' } })
+  files: FileModel[]
 
   @CreateDateColumn()
   createdAt: Date

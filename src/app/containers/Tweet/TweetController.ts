@@ -32,6 +32,7 @@ export default class TweetController {
   public async store(req: CustomRequest, res: CustomResponse) {
     try {
       const body = req.body()
+      const user = req.getUser()
 
       const { ready, errors, hasErrors } = await this.tweetService.storeValidate(body)
 
@@ -39,7 +40,7 @@ export default class TweetController {
         return res.badRequestResponse(errors)
       }
 
-      const tweet = await this.tweetService.store(ready)
+      const tweet = await this.tweetService.store(ready, user)
       return res.okResponse(tweet)
     } catch (e) {
       return res.internalErrorResponse(e)

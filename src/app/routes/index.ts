@@ -10,6 +10,7 @@ import FileRoutes from '../containers/File/FileRoutes'
 import LoginRoutes from '../containers/Login/LoginRoutes'
 import TweetRoutes from '../containers/Tweet/TweetRoutes'
 import LogoutRoutes from '../containers/Logout/LogoutRoutes'
+import UserRepository from '../containers/User/UserRepository'
 
 export interface CustomRequestHandler {
   (req: CustomRequest, res: CustomResponse, next: NextFunction): any
@@ -34,6 +35,7 @@ export default class Routes {
     @inject(TYPES.LoginRoutes) private loginRoutes: LoginRoutes,
     @inject(TYPES.LogoutRoutes) private logoutRoutes: LogoutRoutes,
     @inject(TYPES.TweetRoutes) private tweetRoutes: TweetRoutes,
+    @inject(TYPES.UserRepository) private userRepository: UserRepository,
   ) {
     this.router = Router()
 

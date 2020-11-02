@@ -9,11 +9,13 @@ import loginBinds from '../containers/Login/binds/binds'
 import routesBinds from '../routes/binds/binds'
 import tweetBinds from '../containers/Tweet/binds/binds'
 import logoutBinds from '../containers/Logout/binds/binds'
+import baseBinds from '../base/binds/binds'
 
 export const bindings = new AsyncContainerModule(async (bind) => {
   await createConnection()
 
   configBinds(bind)
+  baseBinds(bind)
 
   routesBinds(bind)
   userBinds(bind)
