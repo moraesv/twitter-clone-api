@@ -55,8 +55,14 @@ export default class UserService {
     return userView.render(createdUser)
   }
 
-  public async updateValidate(body: UserModel) {
-    return validateSchema<typeof userUpdateSchema, UserModel>(userUpdateSchema, body)
+  public async updateValidate(body: UserModel, id: number, loggedUser: UserModel) {
+    const { ready, errors } = await validateSchema<typeof userUpdateSchema, UserModel>(userUpdateSchema, body)
+
+    if (id !== loggedUser.id) {
+      errors.notYou = 'Você só pode atualizar seu próprio usuário'
+    }
+
+    return { ready, errors, hasErrors: Object.keys(errors).length }
   }
 
   public async update(id: number, user: UserModel) {

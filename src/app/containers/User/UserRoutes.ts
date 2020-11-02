@@ -36,7 +36,7 @@ export default class UserRoutes {
         method: 'put',
         path: '/users/:id',
         action: this.userController.update.bind(this.userController),
-        middlewares: [],
+        middlewares: [auth],
       },
       {
         method: 'delete',

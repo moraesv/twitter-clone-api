@@ -50,8 +50,9 @@ export default class UserController {
     try {
       const { id } = req.routeParams()
       const body = req.body()
+      const loggedUser = req.getUser()
 
-      const { ready, errors, hasErrors } = await this.userService.updateValidate(body)
+      const { ready, errors, hasErrors } = await this.userService.updateValidate(body, Number(id), loggedUser)
 
       if (hasErrors) {
         return res.badRequestResponse(errors)
